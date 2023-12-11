@@ -9,6 +9,7 @@
     4. Inputs
         - Special Variables
         - Prompts
+        
     5. Functions
     6. Redirectors & Quotes & Exit status 
     7. Conditions
