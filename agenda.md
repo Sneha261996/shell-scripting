@@ -5,7 +5,7 @@
     3. Variables
         - Local Variables.
         - Environment Variables.
-        - Command Substitution.
+        - Command Substitution. 
     4. Inputs
         - Special Variables
         - Prompts
