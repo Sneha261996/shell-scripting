@@ -7,7 +7,6 @@
         - Environment Variables.
         - Command Substitution. 
     4. Inputs
-    
         - Special Variables
         - Prompts
     5. Functions
