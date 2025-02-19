@@ -1,0 +1,50 @@
+This GitHub Actions workflow file, named Terraform Workflow 1, automates the process of managing infrastructure using Terraform when changes are pushed to the main branch or a pull request (PR) is created targeting the main branch.
+
+Breakdown of the Workflow
+1. Trigger Events
+The workflow runs on:
+
+Push to main branch
+Pull requests targeting main
+2. Permissions
+The workflow grants the following permissions:
+
+id-token: write → Required for authentication with AWS
+contents: write → Allows modifying and pushing updates to the repository
+pull-requests: write → Allows updating PRs with comments or commits
+3. Jobs
+Job: terraform
+Runs on Ubuntu-latest and executes a series of steps.
+
+Steps in the Job
+Step 1: Checkout Code
+Uses the actions/checkout@v3 action to clone the repository.
+Step 2: Configure AWS Credentials
+Uses aws-actions/configure-aws-credentials@v1 to set up AWS authentication.
+Fetches AWS credentials from GitHub secrets (AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY).
+Sets the AWS region to us-east-1.
+Step 3: Setup Terraform
+Uses hashicorp/setup-terraform@v1 to install Terraform v1.0.0.
+Step 4: Install terraform-docs
+Downloads and installs terraform-docs (v0.16.0), a tool for generating Terraform documentation.
+Step 5: Initialize Terraform
+Runs terraform init -reconfigure to initialize Terraform and configure backend settings.
+Step 6: Terraform Plan
+Runs terraform plan -lock=false -out=plan.tfplan to generate an execution plan and save it to plan.tfplan.
+Step 7: Generate Terraform Documentation
+Uses terraform-docs markdown . > README.md to generate documentation from Terraform files and update the README.md.
+Runs only on push or pull request events.
+Step 8: Commit and Push Terraform Docs
+Configures Git settings for github-actions[bot].
+Adds README.md and plan.tfplan to Git.
+Commits the changes with the message "Update Terraform Docs" (skips commit if no changes).
+Pushes changes to the current branch.
+Step 9: Apply Terraform Configuration (Only on Merge to main)
+If the workflow was triggered by a push to main, it applies the Terraform plan (terraform apply -auto-approve -lock=false plan.tfplan).
+This ensures infrastructure changes are deployed only after merging.
+Summary
+Validates and plans Terraform changes on PRs.
+Applies Terraform changes automatically when merged into main.
+Generates and updates Terraform documentation.
+Commits Terraform documentation changes back to the repository.
+This workflow ensures a structured and automated Terraform deployment process. 🚀
